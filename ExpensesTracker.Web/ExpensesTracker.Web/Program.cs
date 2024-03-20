@@ -13,7 +13,7 @@ namespace ExpensesTracker.Web
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("ExpensesTrackerD")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("ExpensesTracker")));
 
 
             var app = builder.Build();
