@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ExpensesTracker.Web.Data\ExpensesTracker.Web.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\ExpensesController\" />
+  </ItemGroup>
+
 </Project>
