@@ -1,4 +1,5 @@
 using ExpensesTracker.Web.Data;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpensesTracker.Web
@@ -12,8 +13,12 @@ namespace ExpensesTracker.Web
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("ExpensesTracker")));
+            var connectionString = builder.Configuration.GetConnectionString("ExpensesTrackerCnnection")
+                                   ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerCnnection' not found.");
+
+            builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+                options.UseMySQL(connectionString)
+            );
 
 
             var app = builder.Build();
@@ -38,6 +43,20 @@ namespace ExpensesTracker.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+        }
+        private static void RegisterDbContext(WebApplicationBuilder builder)
+        {
+            // TODO: Read from appsettings.json!
+            var connectionString = builder.Configuration.GetValue<string>("Database:ConnectionString");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+#if DEBUG
+                options.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
+#endif
+
+                options.UseMySQL(connectionString);
+            });
         }
     }
 }

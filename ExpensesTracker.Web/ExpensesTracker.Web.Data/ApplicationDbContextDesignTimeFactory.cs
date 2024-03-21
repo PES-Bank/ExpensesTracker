@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
+using System;   
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -16,9 +16,10 @@ namespace ExpensesTracker.Web.Data
         {
             foreach (string arg in args) Console.WriteLine(arg);
 
-            DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer();
-            //optionsBuilder.UseMySql();
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseMySQL("ExpensesTrackerCnnection");
+
+
 
             ApplicationDbContext dbContext = new ApplicationDbContext(optionsBuilder.Options);
             return dbContext;
