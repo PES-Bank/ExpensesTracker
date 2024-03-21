@@ -13,8 +13,8 @@ namespace ExpensesTracker.Web
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var connectionString = builder.Configuration.GetConnectionString("ExpensesTrackerCnnection")
-                                   ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerCnnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("ExpensesTrackerConnection")
+                                   ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerConnection' not found.");
 
             builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
                 options.UseMySQL(connectionString)

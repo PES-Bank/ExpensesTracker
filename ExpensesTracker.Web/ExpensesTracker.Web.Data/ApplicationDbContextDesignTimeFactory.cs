@@ -17,7 +17,7 @@ namespace ExpensesTracker.Web.Data
             foreach (string arg in args) Console.WriteLine(arg);
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseMySQL("ExpensesTrackerCnnection");
+            optionsBuilder.UseMySQL("ExpensesTrackerConnection");
 
 
 
