@@ -3,34 +3,34 @@
 *@
 @{
 }
-
+@model ExpensesTracker.Web.Models.AddExpenseViewModel
 
 <h1>Add Expense</h1>
 <form method="post">
 
 <div class = "mt-3">
     <label class="form-label">Expense</label>
-    <input type="text" class="form-control" />
+    <input type="text" class="form-control" asp-for="ExpenseName" />
 </div>
 
 <div class = "mt-3">
     <label class="form-label">Description</label>
-    <input type="text" class="form-control" />
+    <input type="text" class="form-control" asp-for="ExpenseDescription"/>
 </div>
 
 <div class = "mt-3">
     <label class="form-label">Amount</label>
-    <input type="text" class="form-control" />
+    <input type="text" class="form-control" asp-for="ExpenseAmount" />
 </div>
 
     <div class="dropdown">
-        <label class="form-label">Period:</label>
-        <button class="dropbtn">Select Period</button>
-        <div class="dropdown-content">
-            <button onclick="selectPeriod('Daily')">Daily</button>
-            <button onclick="selectPeriod('Monthly')">Monthly</button>
-            <button onclick="selectPeriod('Yearly')">Yearly</button>
-        </div>
+        <label class="form-label" asp-for="ExpenseType">Period:</label>
+        <select class="dropbtn" asp-for="ExpenseType">
+            <option value="">Select Period</option>
+            <option value="Daily">Daily</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+        </select>
     </div>
 
  <div class="mt-3">
