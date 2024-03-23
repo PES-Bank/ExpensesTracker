@@ -6,15 +6,16 @@ namespace ExpensesTracker.Web.Controllers
 {
     public class ExpensesController : Controller
     {
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
         private readonly ApplicationDbContext _applicationDbContext;
         public ExpensesController(ApplicationDbContext applicationDbContext)
         {
             _applicationDbContext = applicationDbContext;
         }
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+        
     }
 }
