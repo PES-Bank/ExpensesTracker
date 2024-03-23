@@ -8,10 +8,10 @@ namespace ExpensesTracker.Web.Controllers
 {
     public class ExpensesController : Controller
     {
-        private readonly ApplicationDbContext dbContext;
-        public ExpensesController(ApplicationDbContext dbContext) 
-        { 
-            this.dbContext=dbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
+        public ExpensesController(ApplicationDbContext applicationDbContext)
+        {
+            _applicationDbContext = applicationDbContext;
         }
 
         [HttpGet]
@@ -29,10 +29,22 @@ namespace ExpensesTracker.Web.Controllers
                 ExpenseType = viewModel.ExpenseType,
                 ExpenseAmount = viewModel.ExpenseAmount,
             };
-            await dbContext.Expenses.AddAsync(expense);
-            await dbContext.SaveChangesAsync();
+            await _applicationDbContext.Expenses.AddAsync(expense);
+            await _applicationDbContext.SaveChangesAsync();
             return View();
         }
-       
+        
+        [HttpGet]
+        public async Task<IActionResult>Remove(Expense viewModel)
+        {
+            var expense =  await _applicationDbContext.Expenses.FindAsync(viewModel.ExpenseId);
+            if (expense is not null)
+            {
+                _applicationDbContext.Expenses.Remove(viewModel);
+                await _applicationDbContext.SaveChangesAsync();
+            }
+            return RedirectToAction("List", "Expense");
+        }
+        
     }
 }
