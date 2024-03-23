@@ -56,8 +56,8 @@ namespace ExpensesTracker.Web.Controllers
             {
                 expenses.ExpenseName = viewModel.ExpenseName;
                 expenses.ExpenseDescription = viewModel.ExpenseDescription;
+                expenses.ExpenseType = viewModel.ExpenseType;
                 expenses.ExpenseAmount = viewModel.ExpenseAmount;
-                expenses.ExpenseName = viewModel.ExpenseName;
 
                 await _applicationDbContext.SaveChangesAsync();
             }
