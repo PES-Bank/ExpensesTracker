@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;   
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using ExpensesTracker.Web;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ExpensesTracker.Web.Data
@@ -14,16 +10,15 @@ namespace ExpensesTracker.Web.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            foreach (string arg in args) Console.WriteLine(arg);
+            // Retrieve the connection string from the command-line arguments
+            var connectionString = "Server=localhost;Database=ExpensesTracker;Uid=root;Pwd=root;" 
+                ?? throw new ArgumentException("Connection string is required.");
 
+            // Setup DbContext options
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseMySQL("ExpensesTrackerConnection");
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-
-
-            ApplicationDbContext dbContext = new ApplicationDbContext(optionsBuilder.Options);
-            return dbContext;
-            
+            return new ApplicationDbContext(optionsBuilder.Options);
         }
     }
 }

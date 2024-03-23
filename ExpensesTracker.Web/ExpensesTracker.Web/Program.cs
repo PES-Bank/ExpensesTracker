@@ -1,6 +1,8 @@
 using ExpensesTracker.Web.Data;
-
+using Microsoft.AspNetCore.Authorization;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace ExpensesTracker.Web
 {
@@ -10,16 +12,14 @@ namespace ExpensesTracker.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-
             var connectionString = builder.Configuration.GetConnectionString("ExpensesTrackerConnection")
-                                   ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerConnection' not found.");
+                        ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerConnection' not found.");
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-            builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-                options.UseMySQL(connectionString)
-            );
 
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -35,7 +35,6 @@ namespace ExpensesTracker.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -44,19 +43,6 @@ namespace ExpensesTracker.Web
 
             app.Run();
         }
-        private static void RegisterDbContext(WebApplicationBuilder builder)
-        {
-            // TODO: Read from appsettings.json!
-            var connectionString = builder.Configuration.GetValue<string>("Database:ConnectionString");
-
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-#if DEBUG
-                options.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
-#endif
-
-                options.UseMySQL(connectionString);
-            });
-        }
+       
     }
 }

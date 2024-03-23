@@ -1,6 +1,8 @@
 ﻿using ExpensesTracker.Web.Data;
 using ExpensesTracker.Web.Data.Entities;
+
 using ExpensesTracker.Web.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +15,7 @@ namespace ExpensesTracker.Web.Controllers
         {
             _applicationDbContext = applicationDbContext;
         }
-
+        
         [HttpGet]
         public IActionResult Add()
         {
@@ -33,7 +35,35 @@ namespace ExpensesTracker.Web.Controllers
             await _applicationDbContext.SaveChangesAsync();
             return View();
         }
-        
+        [HttpGet]
+
+        public async Task<IActionResult> List() 
+        { 
+            var expenses = await _applicationDbContext.Expenses.ToListAsync();
+            return View(expenses);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id) 
+        {
+            var expenses = await _applicationDbContext.Expenses.FindAsync(id);
+            return View(expenses);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Expense viewModel)
+        {
+            var expenses = await _applicationDbContext.Expenses.FindAsync(viewModel.ExpenseId);
+            if (expenses is not null)
+            {
+                expenses.ExpenseName = viewModel.ExpenseName;
+                expenses.ExpenseDescription = viewModel.ExpenseDescription;
+                expenses.ExpenseAmount = viewModel.ExpenseAmount;
+                expenses.ExpenseName = viewModel.ExpenseName;
+
+                await _applicationDbContext.SaveChangesAsync();
+            }
+            return RedirectToAction("List", "Expenses");
+        }
+                
         [HttpGet]
         public async Task<IActionResult>Remove(Expense viewModel)
         {
@@ -45,6 +75,5 @@ namespace ExpensesTracker.Web.Controllers
             }
             return RedirectToAction("List", "Expense");
         }
-        
     }
 }

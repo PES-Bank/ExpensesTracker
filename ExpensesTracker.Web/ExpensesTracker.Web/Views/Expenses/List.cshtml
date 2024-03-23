@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<ExpensesTracker.Web.Data.Entities.Expense>
+<h1>Expenses</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Expense</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Period</th>
+        </tr>
+    </thead>
+    <hr>
+    <tbody>
+
+        @foreach (var expense in Model)
+        {
+
+            <tr>
+                
+                <td>@expense.ExpenseName</td>
+                <td>@expense.ExpenseDescription</td>
+                <td>@expense.ExpenseAmount</td>
+                <td>@expense.ExpenseType</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Expenses" asp-action="Edit" asp-route-id="@expense.ExpenseId">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

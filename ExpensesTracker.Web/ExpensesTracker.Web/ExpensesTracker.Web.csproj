@@ -7,15 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\ExpensesController\**" />
+    <Content Remove="Views\ExpensesController\**" />
+    <EmbeddedResource Remove="Views\ExpensesController\**" />
+    <None Remove="Views\ExpensesController\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExpensesTracker.Web.Data\ExpensesTracker.Web.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\ExpensesController\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
   </ItemGroup>
 
 </Project>
