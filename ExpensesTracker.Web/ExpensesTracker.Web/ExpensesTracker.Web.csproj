@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpensesTracker.Web.Data\ExpensesTracker.Web.Data.csproj" />
+    <Compile Remove="Views\ExpensesController\**" />
+    <Content Remove="Views\ExpensesController\**" />
+    <EmbeddedResource Remove="Views\ExpensesController\**" />
+    <None Remove="Views\ExpensesController\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\ExpensesController\" />
+    <ProjectReference Include="..\ExpensesTracker.Web.Data\ExpensesTracker.Web.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
