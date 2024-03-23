@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensesTracker.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240320170226_InitialMigration")]
+    [Migration("20240323120720_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -21,30 +21,31 @@ namespace ExpensesTracker.Web.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("ExpensesTracker.Web.Data.Entities.Expense", b =>
                 {
                     b.Property<Guid>("ExpenseId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
-                    b.Property<double>("ExpenseAmount")
-                        .HasColumnType("float");
+                    b.Property<string>("ExpenseAmount")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ExpenseDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ExpenseName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ExpenseType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("ExpenseId");
 

@@ -1,6 +1,7 @@
 using ExpensesTracker.Web.Data;
-
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace ExpensesTracker.Web
 {
@@ -8,17 +9,28 @@ namespace ExpensesTracker.Web
     {
         public static void Main(string[] args)
         {
+            //var configuration = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            //    .Build();
+
+            
+
+            //// Add services to the container.
+            //builder.Services.AddControllersWithViews();
+
+            //// Get connection string from appsettings.json
+            //var connectionString = configuration.GetConnectionString("ExpensesTrackerConnection")
+            //                       ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerConnection' not found.");
+
+            //builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+            //    options.UseMySQL(connectionString)
+            //);
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-
             var connectionString = builder.Configuration.GetConnectionString("ExpensesTrackerConnection")
-                                   ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerConnection' not found.");
-
-            builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-                options.UseMySQL(connectionString)
-            );
+                        ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerConnection' not found.");
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 
             var app = builder.Build();
