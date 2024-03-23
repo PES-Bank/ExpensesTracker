@@ -1,4 +1,5 @@
 using ExpensesTracker.Web.Data;
+using Microsoft.AspNetCore.Authorization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
@@ -9,22 +10,6 @@ namespace ExpensesTracker.Web
     {
         public static void Main(string[] args)
         {
-            //var configuration = new ConfigurationBuilder()
-            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            //    .Build();
-
-            
-
-            //// Add services to the container.
-            //builder.Services.AddControllersWithViews();
-
-            //// Get connection string from appsettings.json
-            //var connectionString = configuration.GetConnectionString("ExpensesTrackerConnection")
-            //                       ?? throw new InvalidOperationException("Connection string 'ExpensesTrackerConnection' not found.");
-
-            //builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-            //    options.UseMySQL(connectionString)
-            //);
             var builder = WebApplication.CreateBuilder(args);
 
             var connectionString = builder.Configuration.GetConnectionString("ExpensesTrackerConnection")
@@ -32,6 +17,9 @@ namespace ExpensesTracker.Web
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -47,7 +35,6 @@ namespace ExpensesTracker.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -56,19 +43,6 @@ namespace ExpensesTracker.Web
 
             app.Run();
         }
-        private static void RegisterDbContext(WebApplicationBuilder builder)
-        {
-            // TODO: Read from appsettings.json!
-            var connectionString = builder.Configuration.GetValue<string>("Database:ConnectionString");
-
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-#if DEBUG
-                options.EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true);
-#endif
-
-                options.UseMySQL(connectionString);
-            });
-        }
+       
     }
 }
