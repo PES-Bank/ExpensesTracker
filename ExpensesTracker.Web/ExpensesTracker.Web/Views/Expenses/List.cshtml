@@ -30,6 +30,7 @@
                 <td>@expense.ExpenseType</td>
                 <td>
                     <a class="btn btn-primary" asp-controller="Expenses" asp-action="Edit" asp-route-id="@expense.ExpenseId">Edit</a>
+                    <a class="btn btn-primary" asp-controller="Expenses" asp-action="Details" asp-route-id="@expense.ExpenseId">Details</a>
                 </td>
             </tr>
         }

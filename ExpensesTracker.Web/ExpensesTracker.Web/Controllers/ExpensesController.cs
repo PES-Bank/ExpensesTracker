@@ -64,6 +64,19 @@ namespace ExpensesTracker.Web.Controllers
             }
             return RedirectToAction("List", "Expenses");
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var expense = await _applicationDbContext.Expenses.FindAsync(id);
+            return View(expense);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Details(Expense viewModel)
+        {
+            var expense = await _applicationDbContext.Expenses.FindAsync(viewModel.ExpenseId);
+            
+            return RedirectToAction("List", "Expenses");
+        }
         [HttpPost]
         public async Task<IActionResult> Remove(Guid id)
         {
