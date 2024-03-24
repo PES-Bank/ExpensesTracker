@@ -15,65 +15,66 @@ namespace ExpensesTracker.Web.Controllers
         {
             _applicationDbContext = applicationDbContext;
         }
-        
+
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Add(AddExpenseViewModel viewModel )
+        public async Task<IActionResult> Add(AddExpenseViewModel viewModel)
         {
             var expense = new Expense
             {
                 ExpenseName = viewModel.ExpenseName,
+                ExpenseAmount = viewModel.ExpenseAmount,
                 ExpenseDescription = viewModel.ExpenseDescription,
                 ExpenseType = viewModel.ExpenseType,
-                ExpenseAmount = viewModel.ExpenseAmount,
+
             };
             await _applicationDbContext.Expenses.AddAsync(expense);
             await _applicationDbContext.SaveChangesAsync();
-            return View();
+            return RedirectToAction("List", "Expenses");
         }
         [HttpGet]
 
-        public async Task<IActionResult> List() 
-        { 
+        public async Task<IActionResult> List()
+        {
             var expenses = await _applicationDbContext.Expenses.ToListAsync();
             return View(expenses);
         }
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id) 
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var expenses = await _applicationDbContext.Expenses.FindAsync(id);
-            return View(expenses);
+            var expense = await _applicationDbContext.Expenses.FindAsync(id);
+            return View(expense);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(Expense viewModel)
         {
-            var expenses = await _applicationDbContext.Expenses.FindAsync(viewModel.ExpenseId);
-            if (expenses is not null)
+            var expense = await _applicationDbContext.Expenses.FindAsync(viewModel.ExpenseId);
+            if (expense is not null)
             {
-                expenses.ExpenseName = viewModel.ExpenseName;
-                expenses.ExpenseDescription = viewModel.ExpenseDescription;
-                expenses.ExpenseAmount = viewModel.ExpenseAmount;
-                expenses.ExpenseName = viewModel.ExpenseName;
+                expense.ExpenseName = viewModel.ExpenseName;
+                expense.ExpenseDescription = viewModel.ExpenseDescription;
+                expense.ExpenseAmount = viewModel.ExpenseAmount;
+                expense.ExpenseType = viewModel.ExpenseType;
 
                 await _applicationDbContext.SaveChangesAsync();
             }
             return RedirectToAction("List", "Expenses");
         }
-                
-        [HttpGet]
-        public async Task<IActionResult>Remove(Expense viewModel)
+        [HttpPost]
+        public async Task<IActionResult> Remove(Guid id)
         {
-            var expense =  await _applicationDbContext.Expenses.FindAsync(viewModel.ExpenseId);
+            var expense = await _applicationDbContext.Expenses.FindAsync(id);
             if (expense is not null)
             {
-                _applicationDbContext.Expenses.Remove(viewModel);
+                _applicationDbContext.Expenses.Remove(expense);
                 await _applicationDbContext.SaveChangesAsync();
             }
-            return RedirectToAction("List", "Expense");
+            return RedirectToAction("List", "Expenses");
         }
+
     }
 }
