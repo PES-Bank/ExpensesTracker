@@ -154,5 +154,6 @@ namespace ExpensesTracker.Web.Controllers
         {
             return _context.Expenses.Any(e => e.ExpenseId == id);
         }
+
     }
 }
