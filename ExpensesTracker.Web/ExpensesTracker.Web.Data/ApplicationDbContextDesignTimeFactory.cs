@@ -11,14 +11,17 @@ namespace ExpensesTracker.Web.Data
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             // Retrieve the connection string from the command-line arguments
-            var connectionString = "Server=localhost;Database=ExpensesTracker;Uid=root;Pwd=root;" 
-                ?? throw new ArgumentException("Connection string is required.");
+            if (args.Length != 1) throw new InvalidOperationException
+            ("You need to pass the connection string to use the only argument!");
+            string connectionString = args[0];
 
-            // Setup DbContext options
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            
+            DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
-            return new ApplicationDbContext(optionsBuilder.Options);
+            ApplicationDbContext dbContext = new ApplicationDbContext(optionsBuilder.Options);
+
+            return dbContext;
         }
     }
 }
