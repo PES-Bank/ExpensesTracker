@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpensesTracker.Data.Sorting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,7 +21,10 @@ namespace ExpensesTracker.Data.Repositories
         TEntity? GetWithNavigations(Expression<Func<TEntity, bool>> filter, IEnumerable<string> navigations);
 
         IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> filter);
-        IEnumerable<TProjection> GetMany<TProjection>(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TProjection>> projection);
-        IEnumerable<TProjection> GetMany<TProjection>(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TProjection>> projection, IEnumerable<IOrderClause<TEntity>> orderClauses);
+        IEnumerable<TProjection> GetMany<TProjection>(Expression<Func<TEntity, bool>> filter, 
+            Expression<Func<TEntity, TProjection>> projection);
+        IEnumerable<TProjection> GetMany<TProjection>(Expression<Func<TEntity, bool>> filter, 
+            Expression<Func<TEntity, TProjection>> projection, IEnumerable<IOrderClause<TEntity>> orderClauses);
+        
     }
 }

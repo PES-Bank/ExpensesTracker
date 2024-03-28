@@ -1,5 +1,6 @@
 ﻿using ExpensesTracker.Core.Projections.Expenses;
 using ExpensesTracker.Data.Repositories;
+using ExpensesTracker.Data.Sorting;
 using ExpensesTracker.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace ExpensesTracker.Core.Services.Expenses
 
         public IEnumerable<ExpenseGeneralInfoProjection> GetAllExpenses()
         {
+            var amounOrderClause = new OrderClause<Expense> { Expression = e => e.ExpenseAmount };
             return this.Repository.GetMany(_ => true, e => new ExpenseGeneralInfoProjection
             {
                 ExpenseId = e.ExpenseId,
@@ -25,7 +27,10 @@ namespace ExpensesTracker.Core.Services.Expenses
                 ExpenseDescription = e.ExpenseDescription,
                 ExpenseType = e.ExpenseType,
                 ExpenseAmount = e.ExpenseAmount
-            });
+                
+            }, new[] { amounOrderClause });
+            
+
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿using ExpensesTracker.Web.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ExpensesTracker.Data.Sorting;
+using ExpensesTracker.Data.Extentions;
+using ExpensesTracker.Web.Data;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace ExpensesTracker.Data.Repositories
 {
@@ -66,9 +64,12 @@ namespace ExpensesTracker.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TProjection> GetMany<TProjection>(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TProjection>> projection, IEnumerable<IOrderClause<TEntity>> orderClauses)
+        public IEnumerable<TProjection> GetMany<TProjection>(Expression<Func<TEntity,
+            bool>> filter, Expression<Func<TEntity, TProjection>> projection, 
+            IEnumerable<IOrderClause<TEntity>> orderClauses)
         {
-            throw new NotImplementedException();
+
+            return this._applicationDbContext.Set<TEntity>().Where(filter).OrderBy(orderClauses).Select(projection).ToList();
         }
     }
 }
