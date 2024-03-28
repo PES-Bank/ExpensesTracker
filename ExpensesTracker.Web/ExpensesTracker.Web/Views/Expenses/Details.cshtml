@@ -1,49 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ExpensesTracker.Web.Data.Entities.Expense
+
 @{
+    ViewData["Title"] = "Details";
 }
 
-@model ExpensesTracker.Web.Data.Entities.Expense
+<h1>Details</h1>
 
-@if (Model is null)
-{
-    <p>No expense was found with this Id</p>
-}
-else
-{
-    <h1>Add Expense</h1>
-    <form method="post">
-
-        <div class="mt-3">
-            <label class="form-label">Expense</label>
-            <input type="text" class="form-control" asp-for="ExpenseName" readonly/>
-        </div>
-
-        <div class="mt-3">
-            <label class="form-label">Description</label>
-            <input type="text" class="form-control" asp-for="ExpenseDescription" readonly />
-        </div>
-
-        <div class="mt-3">
-            <label class="form-label">Amount</label>
-            <input type="text" class="form-control" asp-for="ExpenseAmount" readonly />
-        </div>
-
-        <div class="dropdown">
-            <label class="form-label" asp-for="ExpenseType">Period:</label>
-            <select class="dropbtn" asp-for="ExpenseType" readonly>
-                <option value="">Select Period</option>
-                <option value="Daily">Daily</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Yearly">Yearly</option>
-            </select>
-        </div>
-
-
-        <div class="mt-3">
-            <button type="submit" class="btn btn-primary">Back</button>
-        </div>
-    </form>
-}
-
+<div>
+    <h4>Expense</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpenseName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExpenseName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpenseDescription)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExpenseDescription)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpenseType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExpenseType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpenseAmount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExpenseAmount)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ExpenseId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

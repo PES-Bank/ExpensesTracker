@@ -1,49 +1,63 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ExpensesTracker.Web.Data.Entities.Expense
+
 @{
+	ViewData["Title"] = "Edit";
 }
-
-@model ExpensesTracker.Web.Data.Entities.Expense
-
 @if (Model is null)
+
 {
-    <p>No expense was found with this Id</p>
+	<p>No expense was found with this Id</p>
 }
 else
 {
-    <h1>Add Expense</h1>
-    <form method="post">
 
-        <div class="mt-3">
-            <label class="form-label">Expense</label>
-            <input type="text" class="form-control" asp-for="ExpenseName" />
-        </div>
+	<h1>Edit</h1>
 
-        <div class="mt-3">
-            <label class="form-label">Description</label>
-            <input type="text" class="form-control" asp-for="ExpenseDescription" />
-        </div>
+	<h4>Expense</h4>
+	<hr />
+	<div class="row">
+		<div class="col-md-4">
+			<form asp-action="Edit">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="ExpenseId" />
+				<div class="form-group">
+					<label asp-for="ExpenseName" class="control-label"></label>
+					<input asp-for="ExpenseName" class="form-control" />
+					<span asp-validation-for="ExpenseName" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="ExpenseDescription" class="control-label"></label>
+					<input asp-for="ExpenseDescription" class="form-control" />
+					<span asp-validation-for="ExpenseDescription" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="ExpenseAmount" class="control-label"></label>
+					<input asp-for="ExpenseAmount" class="form-control" />
+					<span asp-validation-for="ExpenseAmount" class="text-danger"></span>
+				</div>
+				<div class="dropdown">
+					<label class="form-label" asp-for="ExpenseType">Period:</label>
+					<select class="dropbtn" asp-for="ExpenseType">
+						<option value="">Select Period</option>
+						<option value="Daily">Daily</option>
+						<option value="Monthly">Monthly</option>
+						<option value="Yearly">Yearly</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Save" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
 
-        <div class="mt-3">
-            <label class="form-label">Amount</label>
-            <input type="text" class="form-control" asp-for="ExpenseAmount" />
-        </div>
+	<div>
+		<a asp-action="Index">Back to List</a>
+	</div>
 
-        <div class="dropdown">
-            <label class="form-label" asp-for="ExpenseType">Period:</label>
-            <select class="dropbtn" asp-for="ExpenseType">
-                <option value="">Select Period</option>
-                <option value="Daily">Daily</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Yearly">Yearly</option>
-            </select>
-        </div>
-
-
-        <div class="mt-3">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="submit" class="btn btn-danger ms-3" asp-action="Remove" asp-controller="Expenses">Remove</button>
-        </div>
-    </form>
+	@section Scripts {
+	@{
+			await Html.RenderPartialAsync("_ValidationScriptsPartial");
+		}
+	}
 }
