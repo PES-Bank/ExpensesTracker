@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ExpensesTracker.Web.Data.Entities.Expense>
+﻿@model IEnumerable<AddExpenseViewModel>
 
 @{
     ViewData["Title"] = "Expenses";
 }
 
-<h1>Index</h1>
+<h1>Expenses</h1>
 
 <p>
     <a id="createButton" asp-action="Create" class="btn btn-primary">Create New</a>
@@ -29,24 +29,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var viewModel in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpenseName)
+                @Html.DisplayFor(modelItem => viewModel.ExpenseName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpenseDescription)
+                @Html.DisplayFor(modelItem => viewModel.ExpenseDescription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpenseType)
+                @Html.DisplayFor(modelItem => viewModel.ExpenseType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpenseAmount)
+                @Html.DisplayFor(modelItem => viewModel.ExpenseAmount)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ExpenseId"class="btn btn-primary">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ExpenseId"class="btn btn-primary">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ExpenseId"class=" btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@viewModel.ExpenseId"class="btn btn-primary">Edit</a> |
+                <a asp-action="Details" asp-route-id="@viewModel.ExpenseId"class="btn btn-primary">Details</a> |
+                <a asp-action="Delete" asp-route-id="@viewModel.ExpenseId"class=" btn btn-danger">Delete</a>
             </td>
         </tr>
 }

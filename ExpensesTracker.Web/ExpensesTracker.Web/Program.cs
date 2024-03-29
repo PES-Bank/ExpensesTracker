@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using Microsoft.EntityFrameworkCore.Internal;
+using ExpensesTracker.Core.Services.Expenses;
+using ExpensesTracker.Data.Repositories;
+using ExpensesTracker.Web.Data.Entities;
+using System.Reflection;
 
 namespace ExpensesTracker.Web
 {
@@ -20,6 +25,9 @@ namespace ExpensesTracker.Web
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddAuthorization();
+
+            RegisterServices(builder);
+            RegisterAutoMapper(builder);
 
             var app = builder.Build();
 
@@ -43,6 +51,14 @@ namespace ExpensesTracker.Web
 
             app.Run();
         }
-       
+        private static void RegisterServices(WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IRepository<Expense>, Repository<Expense>>();
+            builder.Services.AddScoped<IExpenseService, ExpenseService>();
+        }
+        private static void RegisterAutoMapper(WebApplicationBuilder builder)
+        {
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        }
     }
 }

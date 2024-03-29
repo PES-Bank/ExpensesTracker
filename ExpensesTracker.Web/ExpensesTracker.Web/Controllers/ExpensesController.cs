@@ -7,25 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ExpensesTracker.Web.Data;
 using ExpensesTracker.Web.Data.Entities;
+using ExpensesTracker.Core.Services.Expenses;
+using AutoMapper;
+using ExpensesTracker.Web.ViewModels.Expenses;
 
 namespace ExpensesTracker.Web.Controllers
 {
     public class ExpensesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IExpenseService _expenseService;
+        private readonly IMapper _mapper;
 
-        public ExpensesController(ApplicationDbContext context)
+        public ExpensesController(IExpenseService expenseService, IMapper mapper)
         {
-            _context = context;
+            _expenseService = expenseService
+                ?? throw new ArgumentNullException(nameof(expenseService));
+            this._mapper = mapper
+                ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        // GET: Expenses
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Expenses.ToListAsync());
+            var expenses = this._expenseService.GetAllExpenses();
+            var viewModels = this._mapper.Map<IEnumerable<AddExpenseViewModel>>(expenses);
+            return this.View(viewModels);
         }
 
-        // GET: Expenses/Details/5
+        /*// GET: Expenses/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -154,6 +163,6 @@ namespace ExpensesTracker.Web.Controllers
         {
             return _context.Expenses.Any(e => e.ExpenseId == id);
         }
-
+        */
     }
 }
