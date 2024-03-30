@@ -11,7 +11,11 @@ namespace ExpensesTracker.Web.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
+			migrationBuilder.RenameColumn(
+				name: "ExpenseId",
+				table: "Expenses",
+				newName: "Id");
+			migrationBuilder.AlterDatabase()
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
