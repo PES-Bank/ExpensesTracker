@@ -10,5 +10,6 @@ namespace ExpensesTracker.Core.Services
         where TEntity : class
     {
         bool Create(TEntity entity);
+        bool Delete(Guid id);
     }
 }

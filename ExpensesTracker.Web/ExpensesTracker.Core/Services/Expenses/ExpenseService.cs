@@ -22,7 +22,7 @@ namespace ExpensesTracker.Core.Services.Expenses
             var amounOrderClause = new OrderClause<Expense> { Expression = e => e.ExpenseAmount };
             return this.Repository.GetMany(_ => true, e => new ExpenseGeneralInfoProjection
             {
-                ExpenseId = e.ExpenseId,
+                Id = e.Id,
                 ExpenseName = e.ExpenseName,
                 ExpenseDescription = e.ExpenseDescription,
                 ExpenseType = e.ExpenseType,

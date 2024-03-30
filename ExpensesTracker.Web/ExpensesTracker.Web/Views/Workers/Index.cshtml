@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WorkerViewModel>
+
+@{
+    ViewData["Title"] = "Workers";
+}
+
+<h1>Workers</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Position)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var viewModel in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => viewModel.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => viewModel.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => viewModel.Position)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => viewModel.PhoneNumber)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@viewModel.Id" class="btn btn-primary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@viewModel.Id" class=" btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

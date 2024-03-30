@@ -8,7 +8,7 @@ namespace ExpensesTracker.Core.Projections.Expenses
 {
     public record ExpenseGeneralInfoProjection
     {
-        public required Guid ExpenseId { get; init; }
+        public required Guid Id { get; init; }
         public required string ExpenseName { get; init; }
         public required string ExpenseDescription { get; init;}
         public required string ExpenseType { get; init;}
