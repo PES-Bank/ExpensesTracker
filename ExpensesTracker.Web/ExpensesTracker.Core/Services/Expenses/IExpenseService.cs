@@ -11,5 +11,6 @@ namespace ExpensesTracker.Core.Services.Expenses
     public interface IExpenseService : IService<Expense>
     {
         IEnumerable<ExpenseGeneralInfoProjection> GetAllExpenses();
+        ExpenseGeneralInfoProjection? GetOne(Guid id);
     }
 }

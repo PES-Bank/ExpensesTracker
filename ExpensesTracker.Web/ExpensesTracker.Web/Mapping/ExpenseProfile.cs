@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ExpensesTracker.Core.Projections.Expenses;
 using ExpensesTracker.Web.ViewModels.Expenses;
+using ExpensesTracker.Web.Data.Entities;
 
 namespace ExpensesTracker.Web.Mapping
 {
@@ -9,6 +10,8 @@ namespace ExpensesTracker.Web.Mapping
         public ExpenseProfile()
         {
             this.CreateMap<ExpenseGeneralInfoProjection, AddExpenseViewModel>();
+            this.CreateMap<ExpenseCreateModel, Expense>();
+            this.CreateMap<Expense, ExpenseEditModel>();
         }
     }
 }

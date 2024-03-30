@@ -9,6 +9,10 @@ namespace ExpensesTracker.Core.Services
     public interface IService<TEntity>
         where TEntity : class
     {
+        
+        TEntity? GetById(Guid id);
         bool Create(TEntity entity);
+        bool Update(TEntity entity);
+        bool Delete(Guid id);
     }
 }
