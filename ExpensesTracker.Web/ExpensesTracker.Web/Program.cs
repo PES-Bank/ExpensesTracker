@@ -8,6 +8,8 @@ using ExpensesTracker.Core.Services.Expenses;
 using ExpensesTracker.Data.Repositories;
 using ExpensesTracker.Web.Data.Entities;
 using System.Reflection;
+using ExpensesTracker.Data.Entities;
+using ExpensesTracker.Core.Services.Workers;
 
 namespace ExpensesTracker.Web
 {
@@ -55,6 +57,8 @@ namespace ExpensesTracker.Web
         {
             builder.Services.AddScoped<IRepository<Expense>, Repository<Expense>>();
             builder.Services.AddScoped<IExpenseService, ExpenseService>();
+            builder.Services.AddScoped<IRepository<Worker>, Repository<Worker>>();
+            builder.Services.AddScoped<IWorkerService, WorkerService>();
         }
         private static void RegisterAutoMapper(WebApplicationBuilder builder)
         {

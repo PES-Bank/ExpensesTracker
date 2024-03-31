@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace ExpensesTracker.Data.Repositories
 {
     public interface IRepository<TEntity>
+        where TEntity : class
     {
         void Create(TEntity entity);
         void Update(TEntity entity);

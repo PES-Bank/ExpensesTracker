@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ExpensesTracker.Web.Data.Entities;
+using ExpensesTracker.Data.Entities;
 namespace ExpensesTracker.Web.Data
 {
     public class ApplicationDbContext: DbContext
@@ -11,5 +12,6 @@ namespace ExpensesTracker.Web.Data
         {
         }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Worker> Workers { get; set; }
     }
 }

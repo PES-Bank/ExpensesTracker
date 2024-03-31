@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.Core.Projections.Expenses;
+using ExpensesTracker.Data.Entities;
 using ExpensesTracker.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
