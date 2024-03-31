@@ -11,7 +11,9 @@ namespace ExpensesTracker.Web.Mapping
         {
             this.CreateMap<ExpenseGeneralInfoProjection, AddExpenseViewModel>();
             this.CreateMap<ExpenseCreateModel, Expense>();
-            this.CreateMap<Expense, ExpenseEditModel>();
+            this.CreateMap<AddExpenseViewModel, Expense>();
+            this.CreateMap<Expense, AddExpenseViewModel>();
+            this.CreateMap<ExpenseEditProjection, ExpenseEditModel>();
         }
     }
 }

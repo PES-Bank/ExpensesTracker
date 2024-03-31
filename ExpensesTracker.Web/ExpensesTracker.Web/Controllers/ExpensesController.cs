@@ -33,62 +33,55 @@ namespace ExpensesTracker.Web.Controllers
             var viewModels = this._mapper.Map<IEnumerable<AddExpenseViewModel>>(expenses);
             return this.View(viewModels);
         }
-        
+
         [HttpGet("create")]
         public IActionResult Create()
         {
-            return this.View(); 
+            return this.View();
         }
 
-        
+
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("create")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("ExpenseId,ExpenseName,ExpenseDescription,ExpenseType,ExpenseAmount")] ExpenseCreateModel InputModel)
+        public IActionResult Create([FromForm] ExpenseCreateModel InputModel)
         {
             if (!ModelState.IsValid) return this.View(InputModel);
             {
                 var expense = this._mapper.Map<Expense>(InputModel);
                 this._expenseService.Create(expense);
-               
+
                 return this.RedirectToAction(nameof(Index));
             }
-            
+
         }
 
         [HttpGet("delete")]
         public IActionResult Delete(Guid id)
         {
 
-            var expense = this._expenseService.GetOne(id);
-            if (expense == null)
-            {
-                return this.NotFound();
-            }
+            var expense = this._expenseService.GetById(id);
+            if (expense is null) return this.NotFound();
+
             var viewModel = this._mapper.Map<AddExpenseViewModel>(expense);
             return this.View(viewModel);
         }
 
-        
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(Guid id)
         {
             this._expenseService.Delete(id);
 
-           
+
             return this.RedirectToAction(nameof(Index));
         }
 
         [HttpGet("details")]
         public IActionResult Details(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var expense = this._expenseService.GetOne(id);
             if (expense == null)
             {
@@ -102,36 +95,32 @@ namespace ExpensesTracker.Web.Controllers
         [HttpGet("edit")]
         public IActionResult Edit(Guid id)
         {
+            var expense = this._expenseService.GetOneEdit(id);
+            if (expense is null) return this.NotFound();
+
+            var viewModel = this._mapper.Map<ExpenseEditModel>(expense);
+            return View(viewModel);
+
+
+        }
+
+
+        [HttpPost("edit"),ValidateAntiForgeryToken]
+        public IActionResult Edit(Guid id, AddExpenseViewModel inputModel)
+        {
+            if (!ModelState.IsValid) return this.View(inputModel);
+            if (id != inputModel.Id) return this.NotFound();
+
+
             var expense = this._expenseService.GetById(id);
             if (expense is null) return this.NotFound();
-            
-                return this.NotFound();
-                var viewModel = this._mapper.Map<ExpenseEditModel>(expense);
-                return View(viewModel);
-            
+
+
+            this._mapper.Map(inputModel, expense);
+            this._expenseService.Update(expense);
+
+            return this.RedirectToAction(nameof(Index));
 
         }
-
-        
-        [HttpPost("edit"),ValidateAntiForgeryToken]
-        public IActionResult Edit(Guid id,ExpenseEditModel inputModel)
-        {
-            if( id != inputModel.Id) return this.NotFound();
-            if (!ModelState.IsValid) return this.View(inputModel);
-            {
-                var expense = this._expenseService.GetById(id);
-                if (expense is null) return this.NotFound();
-
-
-                  this._mapper.Map(inputModel, expense);
-                this._expenseService.Update(expense);
-               
-                return this.RedirectToAction(nameof(Index));
-            }
-            
-        }
-
-       
-        
     }
 }

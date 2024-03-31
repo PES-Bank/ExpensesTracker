@@ -13,5 +13,6 @@ namespace ExpensesTracker.Core.Services.Expenses
     {
         IEnumerable<ExpenseGeneralInfoProjection> GetAllExpenses();
         ExpenseGeneralInfoProjection? GetOne(Guid id);
+        ExpenseEditProjection? GetOneEdit(Guid id);
     }
 }
