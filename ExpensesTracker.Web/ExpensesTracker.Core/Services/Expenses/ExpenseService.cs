@@ -32,5 +32,13 @@ namespace ExpensesTracker.Core.Services.Expenses
             
 
         }
+
+        public ExpenseGeneralInfoProjection? GetOne(Guid id)
+        {
+            return this.Repository.Get(
+                e => e.ExpenseId == id,
+                e => new ExpenseGeneralInfoProjection { ExpenseId = e.ExpenseId, ExpenseName = e.ExpenseName, ExpenseDescription=e.ExpenseDescription, ExpenseAmount=e.ExpenseAmount,ExpenseType=e.ExpenseType });
+                
+        }
     }
 }

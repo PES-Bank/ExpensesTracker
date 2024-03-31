@@ -27,142 +27,111 @@ namespace ExpensesTracker.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var expenses = this._expenseService.GetAllExpenses();
             var viewModels = this._mapper.Map<IEnumerable<AddExpenseViewModel>>(expenses);
             return this.View(viewModels);
         }
-
-        /*// GET: Expenses/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var expense = await _context.Expenses
-                .FirstOrDefaultAsync(m => m.ExpenseId == id);
-            if (expense == null)
-            {
-                return NotFound();
-            }
-
-            return View(expense);
-        }
-
-        // GET: Expenses/Create
+        
+        [HttpGet("create")]
         public IActionResult Create()
         {
-            return View();
+            return this.View(); 
         }
 
-        // POST: Expenses/Create
+        
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ExpenseId,ExpenseName,ExpenseDescription,ExpenseType,ExpenseAmount")] Expense expense)
+        public IActionResult Create([Bind("ExpenseId,ExpenseName,ExpenseDescription,ExpenseType,ExpenseAmount")] ExpenseCreateModel InputModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return this.View(InputModel);
             {
-                expense.ExpenseId = Guid.NewGuid();
-                _context.Add(expense);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var expense = this._mapper.Map<Expense>(InputModel);
+                this._expenseService.Create(expense);
+               
+                return this.RedirectToAction(nameof(Index));
             }
-            return View(expense);
+            
         }
 
-        // GET: Expenses/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        [HttpGet("delete")]
+        public IActionResult Delete(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var expense = await _context.Expenses.FindAsync(id);
+            var expense = this._expenseService.GetOne(id);
             if (expense == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
-            return View(expense);
+            var viewModel = this._mapper.Map<AddExpenseViewModel>(expense);
+            return this.View(viewModel);
         }
 
-        // POST: Expenses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ExpenseId,ExpenseName,ExpenseDescription,ExpenseType,ExpenseAmount")] Expense expense)
-        {
-            if (id != expense.ExpenseId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(expense);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ExpenseExists(expense.ExpenseId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(expense);
-        }
-
-        // GET: Expenses/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var expense = await _context.Expenses
-                .FirstOrDefaultAsync(m => m.ExpenseId == id);
-            if (expense == null)
-            {
-                return NotFound();
-            }
-
-            return View(expense);
-        }
-
-        // POST: Expenses/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public IActionResult DeleteConfirmed(Guid id)
         {
-            var expense = await _context.Expenses.FindAsync(id);
-            if (expense != null)
+            this._expenseService.Delete(id);
+
+           
+            return this.RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("details")]
+        public IActionResult Details(Guid id)
+        {
+            if (id == null)
             {
-                _context.Expenses.Remove(expense);
+                return NotFound();
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var expense = this._expenseService.GetOne(id);
+            if (expense == null)
+            {
+                return this.NotFound();
+            }
+            var viewModel = this._mapper.Map<AddExpenseViewModel>(expense);
+            return this.View(viewModel);
         }
 
-        private bool ExpenseExists(Guid id)
+
+        [HttpGet("edit")]
+        public IActionResult Edit(Guid id)
         {
-            return _context.Expenses.Any(e => e.ExpenseId == id);
+            var expense = this._expenseService.GetById(id);
+            if (expense is null) return this.NotFound();
+            
+                return this.NotFound();
+                var viewModel = this._mapper.Map<ExpenseEditModel>(expense);
+                return View(viewModel);
+            
+
         }
-        */
+
+        
+        [HttpPost("edit"),ValidateAntiForgeryToken]
+        public IActionResult Edit(Guid id,ExpenseEditModel inputModel)
+        {
+            if( id != inputModel.Id) return this.NotFound();
+            if (!ModelState.IsValid) return this.View(inputModel);
+            {
+                var expense = this._expenseService.GetById(id);
+                if (expense is null) return this.NotFound();
+
+
+                  this._mapper.Map(inputModel, expense);
+                this._expenseService.Update(expense);
+               
+                return this.RedirectToAction(nameof(Index));
+            }
+            
+        }
+
+       
+        
     }
 }
